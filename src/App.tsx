@@ -1,25 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import PdfDemo from "./Components/PdfDemo";
+import { PDF } from "./assets";
+import { Worker } from "@react-pdf-viewer/core";
+import SlidePresentationExample from "./Components/SlidePresentationExample";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
+        <SlidePresentationExample fileUrl={PDF} />
+      </Worker>
+
+      {/* <PdfDemo/> */}
+    </>
   );
 }
 
