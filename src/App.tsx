@@ -9,6 +9,10 @@ import "./App.css";
 function App() {
   return (
     <>
+      <p>
+        worked on highlight and get meaning through an api, i'd modify it to a
+        modal, just a demo
+      </p>
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
         <SlidePresentationExample fileUrl={PDF} />
       </Worker>

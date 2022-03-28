@@ -1,3 +1,3 @@
-import PDF from "./sample.pdf";
+import PDF from "./TheLinuxCommand.pdf";
 
 export { PDF };

@@ -15,7 +15,8 @@ import {
 
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/page-navigation/lib/styles/index.css";
-import { useEffect, KeyboardEvent } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import disableScrollPlugin from "./disableScrollPlugin";
 
 interface SlidePresentationExampleProps {
@@ -29,9 +30,11 @@ const SlidePresentationExample: React.FC<SlidePresentationExampleProps> = ({
   const pageNavigationPluginInstance = pageNavigationPlugin();
 
   const { GoToNextPage, GoToPreviousPage } = pageNavigationPluginInstance;
-  const logs = (e: KeyboardEvent): void => {
-    console.log(e.key);
-  };
+
+  const [item, setItem] = useState([]);
+  //   const logs = (e: KeyboardEvent): void => {
+  //     console.log(e.key);
+  //   };
   useEffect(() => {
     // var selection = window.getSelection()?.toString();
     // if (selection === "") {
@@ -39,6 +42,32 @@ const SlidePresentationExample: React.FC<SlidePresentationExampleProps> = ({
     // } else {
     //   window.alert(selection);
     // }
+
+    document.onmouseup = () => {
+      const selectt = window.getSelection()?.toString();
+
+      if (selectt === "") {
+        return;
+      } else {
+        console.log(selectt);
+        // window.alert(selectt);
+        axios
+          .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${selectt}`)
+          .then((res) => {
+            const word = res.data[0].meanings[0].definitions[0].definition;
+            console.log(word);
+            window.alert(`The meaning is ${word}`);
+
+            // setItem(res.data);
+            // console.log(item);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        // console.log(item[0]);
+      }
+    };
+
     document.querySelectorAll("div").forEach((elem) => {
       elem.addEventListener("copy", (event) => {
         event.preventDefault();
@@ -46,8 +75,17 @@ const SlidePresentationExample: React.FC<SlidePresentationExampleProps> = ({
       elem.addEventListener("dragstart", (event) => {
         event.preventDefault();
       });
+      //   elem.addEventListener("mouseup", (event) => {
+      //     console.log(event);
+      //   });
+      //   elem.addEventListener("contextmenu", (event) => {
+      //     event.preventDefault();
+      //   });
     });
-    document.addEventListener("contextmenu", (event) => event.preventDefault());
+
+    const app = document.getElementById("test");
+    app?.addEventListener("contextmenu", (event) => event.preventDefault());
+    // document.addEventListener("contextmenu", (event) => event.preventDefault());
     // document.onkeydown = function (e) {
     //   if (event.keyCode == 123) {
     //     return false;
@@ -81,7 +119,7 @@ const SlidePresentationExample: React.FC<SlidePresentationExampleProps> = ({
   });
 
   return (
-    <div className="container" onKeyDown={logs}>
+    <div className="container" id="test">
       <div
         className="rpv-core__viewer"
         style={{
